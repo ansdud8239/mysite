@@ -1,7 +1,7 @@
 package com.douzone.mysite.vo;
 
 
-public class GuestBookVo {
+public class GuestbookVo {
 
 	private Long no;
 	private String name;
@@ -9,13 +9,12 @@ public class GuestBookVo {
 	private String message;
 	private String regDate;
 	
-	public GuestBookVo() {}
+	public GuestbookVo() {}
 	
-	public GuestBookVo(String name,String password,String message,String reDate) {
+	public GuestbookVo(String name,String password,String message) {
 		this.name = name;
 		this.password = password;
 		this.message = message;
-		this.regDate = reDate;
 	}
 
 	public Long getNo() {
