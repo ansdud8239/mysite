@@ -57,7 +57,7 @@ public class UserDao {
 			rs = pstmt.executeQuery();
 
 			// 5. 결과
-			if(rs.next()){
+			if (rs.next()) {
 				result = new UserVo();
 				result.setNo(rs.getLong(1));
 				result.setName(rs.getString(2));
@@ -83,6 +83,7 @@ public class UserDao {
 
 		return result;
 	}
+
 	public UserVo findByNo(Long no) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -96,7 +97,7 @@ public class UserDao {
 			rs = pstmt.executeQuery();
 
 			// 5. 결과
-			if(rs.next()){
+			if (rs.next()) {
 				result = new UserVo();
 				result.setName(rs.getString(1));
 				result.setPassword(rs.getString(2));
@@ -126,10 +127,45 @@ public class UserDao {
 	}
 
 	public void update(UserVo vo) {
-		// TODO Auto-generated method stub
-		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		try {
+			conn = getConnetion();
+			if("".equals(vo.getPassword())) {
+				String sql = "update user set name=?,email=?,gender=? where no=?";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, vo.getName());
+				pstmt.setString(2, vo.getEmail());
+				pstmt.setString(3, vo.getGender());
+				pstmt.setLong(4, vo.getNo());
+			}else {
+				String sql = "update user set name=?,email=?,password=password(?),gender=? where no=?";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, vo.getName());
+				pstmt.setString(2, vo.getEmail());
+				pstmt.setString(3, vo.getPassword());
+				pstmt.setString(4, vo.getGender());
+				pstmt.setLong(5, vo.getNo());
+			}
+			pstmt.executeUpdate();
+
+		} catch (SQLException e) {
+			System.out.println("error: " + e);
+		} finally {
+			try {
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
 	}
-	
+
 	private Connection getConnetion() throws SQLException {
 		Connection conn = null;
 		try {
@@ -144,9 +180,5 @@ public class UserDao {
 		return conn;
 
 	}
-
-	
-
-	
 
 }
