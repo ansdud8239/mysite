@@ -125,6 +125,11 @@ public class UserDao {
 		return result;
 	}
 
+	public void update(UserVo vo) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	private Connection getConnetion() throws SQLException {
 		Connection conn = null;
 		try {
@@ -139,6 +144,8 @@ public class UserDao {
 		return conn;
 
 	}
+
+	
 
 	
 
