@@ -9,8 +9,9 @@ import javax.servlet.http.HttpServletResponse;
 import com.douzone.mysite.dao.GuestbookDao;
 import com.douzone.mysite.vo.GuestbookVo;
 import com.douzone.web.mvc.Action;
+import com.douzone.web.util.MvcUtil;
 
-public class GuestbookInsertAction implements Action {
+public class InsertAction implements Action {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -22,7 +23,7 @@ public class GuestbookInsertAction implements Action {
 		System.out.println(vo.toString());
 		new GuestbookDao().insert(vo);
 		
-		response.sendRedirect(request.getContextPath()+"/guestbook");
+		MvcUtil.redirect(request.getContextPath()+"/guestbook", request, response);
 	}
 
 }

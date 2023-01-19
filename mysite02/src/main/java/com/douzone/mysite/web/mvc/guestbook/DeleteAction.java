@@ -9,8 +9,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.douzone.mysite.dao.GuestbookDao;
 import com.douzone.web.mvc.Action;
+import com.douzone.web.util.MvcUtil;
 
-public class GuestbookDeleteAction implements Action {
+public class DeleteAction implements Action {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -19,7 +20,7 @@ public class GuestbookDeleteAction implements Action {
 
 		boolean result = new GuestbookDao().delete(no, password);
 		if (result) {
-			response.sendRedirect(request.getContextPath()+"/guestbook");
+			MvcUtil.redirect(request.getContextPath()+"/guestbook", request, response);
 		} else {
 			response.setCharacterEncoding("UTF-8");
 			response.setContentType("text/html; charset=UTF-8");
