@@ -18,7 +18,7 @@ public class BoardDao {
 		PreparedStatement pstmt = null;
 		try {
 			conn = getConnetion();
-			String sql = "insert into board values(null,?,?,1,now(),(select g_no from (select max(g_no)+1 'g_no' from board) tmp),1,0,?)";
+			String sql = "insert into board values(null,?,?,1,now(),(select g_no from (select if(max(g_no) is null,1,(max(g_no+1))) 'g_no' from board) tmp),1,0,?)";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, vo.getTitle());
 			pstmt.setString(2, vo.getContent());
