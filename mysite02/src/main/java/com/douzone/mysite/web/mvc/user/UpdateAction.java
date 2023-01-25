@@ -38,6 +38,10 @@ public class UpdateAction implements Action {
 		UserVo vo = new UserVo(name, email, password, gender);
 		vo.setNo(authUser.getNo());
 		new UserDao().update(vo);
+		
+		authUser.setName(name);
+		session.setAttribute("authUser",authUser );
+		
 		MvcUtil.redirect(request.getContextPath(), request, response);
 	}
 

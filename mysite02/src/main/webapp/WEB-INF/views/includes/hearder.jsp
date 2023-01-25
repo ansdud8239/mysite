@@ -1,10 +1,7 @@
-<%@page import="com.douzone.mysite.vo.UserVo"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%
-	String path = request.getContextPath();
-	UserVo authUser=(UserVo)session.getAttribute("authUser");
-%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,14 +12,17 @@
 	<div id="header">
 		<h1>MySite</h1>
 		<ul>
-			<% if(authUser == null){%>
-			<li><a href="<%=path%>/user?a=loginform">로그인</a></li>
-			<li><a href="<%=path%>/user?a=joinform">회원가입</a></li>
-			<%}else{ %>
-			<li><a href="<%=path%>/user?a=updateform">회원정보수정</a></li>
-			<li><a href="<%=path%>/user?a=logout">로그아웃</a></li>
-			<li><%=authUser.getName() %>님 안녕하세요 ^^;</li>
-			<%} %>
+			<c:choose>
+				<c:when test="${empty authUser}">
+					<li><a href="${pageContext.request.contextPath }/user?a=loginform">로그인</a></li>
+					<li><a href="${pageContext.request.contextPath }/user?a=joinform">회원가입</a></li>
+				</c:when>
+				<c:otherwise>
+					<li><a href="${pageContext.request.contextPath }/user?a=updateform">회원정보수정</a></li>
+					<li><a href="${pageContext.request.contextPath }/user?a=logout">로그아웃</a></li>
+					<li>${authUser.name }님 안녕하세요 ^^;</li>
+				</c:otherwise>
+			</c:choose>
 		</ul>
 	</div>
 </body>
