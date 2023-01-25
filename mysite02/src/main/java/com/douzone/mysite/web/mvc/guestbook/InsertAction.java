@@ -8,8 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.douzone.mysite.dao.GuestbookDao;
 import com.douzone.mysite.vo.GuestbookVo;
-import com.douzone.web.mvc.Action;
-import com.douzone.web.util.MvcUtil;
+import com.douzone.web2.mvc.Action;
+import com.douzone.web2.util.MvcUtil;
 
 public class InsertAction implements Action {
 
@@ -20,7 +20,6 @@ public class InsertAction implements Action {
 		String content= request.getParameter("content");
 		
 		GuestbookVo vo =new GuestbookVo(name,password,content);
-		System.out.println(vo.toString());
 		new GuestbookDao().insert(vo);
 		
 		MvcUtil.redirect(request.getContextPath()+"/guestbook", request, response);

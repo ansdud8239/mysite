@@ -8,8 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.douzone.mysite.web.mvc.board.BoardActionFactory;
 import com.douzone.mysite.web.mvc.guestbook.GuestbookActionFactory;
-import com.douzone.web.mvc.Action;
-import com.douzone.web.mvc.ActionFactory;
+import com.douzone.web2.mvc.Action;
+import com.douzone.web2.mvc.ActionFactory;
 
 
 public class BoardController extends HttpServlet {
@@ -17,7 +17,6 @@ public class BoardController extends HttpServlet {
 
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setCharacterEncoding("utf-8");
 		String actionName = request.getParameter("a");
 		ActionFactory af = new BoardActionFactory();
 		Action action = af.getAction(actionName);

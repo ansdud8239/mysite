@@ -5,8 +5,9 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.douzone.web.mvc.Action;
-import com.douzone.web.util.MvcUtil;
+
+import com.douzone.web2.mvc.Action;
+import com.douzone.web2.util.MvcUtil;
 
 public class ListFormAction implements Action {
 
