@@ -10,13 +10,18 @@ import com.douzone.mysite.vo.GuestbookVo;
 import com.douzone.mysite.vo.UserVo;
 
 public class UserDao {
-
+	private final String INSERT_USER =  "insert into user values(null,?,?,password(?),?,now())";
+	private final String SELECT_USER_BY_EMAIL_PWD= "select no,name from user where email=? and password = password(?)";
+	private final String SELECT_USER_BY_NO =  "select name,password,email,gender from user where no=?";
+	private final String UPDATE_USER_BY_NO = "update user set name=?,email=?,gender=? where no=?";
+	private final String UPDATE_USER_PWD_BY_NO = "update user set name=?,email=?,password=password(?),gender=? where no=?";
+	
 	public void insert(UserVo vo) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		try {
 			conn = getConnetion();
-			String sql = "insert into user values(null,?,?,password(?),?,now())";
+			String sql = INSERT_USER;
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, vo.getName());
 			pstmt.setString(2, vo.getEmail());
@@ -50,7 +55,7 @@ public class UserDao {
 		UserVo result = null;
 		try {
 			conn = getConnetion();
-			String sql = "select no,name from user where email=? and password = password(?)";
+			String sql = SELECT_USER_BY_EMAIL_PWD;
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, vo.getEmail());
 			pstmt.setString(2, vo.getPassword());
@@ -91,7 +96,7 @@ public class UserDao {
 		UserVo result = null;
 		try {
 			conn = getConnetion();
-			String sql = "select name,password,email,gender from user where no=?";
+			String sql = SELECT_USER_BY_NO;
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setLong(1, no);
 			rs = pstmt.executeQuery();
@@ -132,14 +137,14 @@ public class UserDao {
 		try {
 			conn = getConnetion();
 			if("".equals(vo.getPassword())) {
-				String sql = "update user set name=?,email=?,gender=? where no=?";
+				String sql = UPDATE_USER_BY_NO;
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setString(1, vo.getName());
 				pstmt.setString(2, vo.getEmail());
 				pstmt.setString(3, vo.getGender());
 				pstmt.setLong(4, vo.getNo());
 			}else {
-				String sql = "update user set name=?,email=?,password=password(?),gender=? where no=?";
+				String sql = UPDATE_USER_PWD_BY_NO;
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setString(1, vo.getName());
 				pstmt.setString(2, vo.getEmail());

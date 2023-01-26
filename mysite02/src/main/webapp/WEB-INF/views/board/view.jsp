@@ -25,16 +25,32 @@
 					<tr>
 						<td class="label">내용</td>
 						<td>
-							<div class="view-content">
-								${vo.content }
-							</div>
+							<div class="view-content">${vo.content }</div>
 						</td>
 					</tr>
 				</table>
+
+				<!-- 댓글 
+				<form method="post" action="${pageContext.request.contextPath }/board">
+					<table class="tbl-ex">
+						<tr>
+							<td class="label">댓글</td>
+							<td>
+								<input type="text" name="title" value="" style="width: 400px;">
+								<input type="submit" value="등록">
+							</td>
+
+						</tr>
+					</table>
+				</form>
+				-->
 				<div class="bottom">
+					<c:if test="${not empty authUser }">
+					<a href="${pageContext.request.contextPath }/board?a=commentform&no=${vo.no }&groupNo=${vo.groupNo}&depth=${vo.depth }">댓글</a>
+					</c:if>
 					<a href="${pageContext.request.contextPath }/board">글목록</a>
 					<c:if test="${authUser.no == vo.userNo}">
-					<a href="${pageContext.request.contextPath }/board?a=modifyform&no=${vo.no }">글수정</a>
+						<a href="${pageContext.request.contextPath }/board?a=modifyform&no=${vo.no }">글수정</a>
 					</c:if>
 				</div>
 			</div>

@@ -11,6 +11,7 @@ public class BoardVo {
 	private Long depth;
 	private Long userNo;
 	private String userName;
+	private String status;
 	
 	public Long getNo() {
 		return no;
@@ -72,12 +73,21 @@ public class BoardVo {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
+	
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
 	@Override
 	public String toString() {
 		return "BoardVo [no=" + no + ", title=" + title + ", content=" + content + ", hit=" + hit + ", regDate="
 				+ regDate + ", groupNo=" + groupNo + ", ownerNo=" + ownerNo + ", depth=" + depth + ", userNo=" + userNo
-				+ ", userName=" + userName + "]";
+				+ ", userName=" + userName + ", satus=" + status + "]";
 	}
+	
+
 	
 
 }

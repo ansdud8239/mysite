@@ -14,8 +14,8 @@
 		<c:import url="/WEB-INF/views/includes/hearder.jsp" />
 		<div id="content">
 			<div id="board">
-				<form id="search_form" action="" method="post">
-					<input type="text" id="kwd" name="kwd" value="">
+				<form id="search_form" action="${pageContext.request.contextPath }/board" method="post">
+					<input type="text" id="kwd" name="kwd" value="${kwd }">
 					<input type="submit" value="찾기">
 				</form>
 				<table class="tbl-ex">
@@ -27,22 +27,34 @@
 						<th>작성일</th>
 						<th>&nbsp;</th>
 					</tr>
-					<c:set var="count" value="${fn:length(list) }" />
+					<c:set var="totalcount" value="${paging.totalCount}" />
 					<c:forEach items="${list }" var="vo" varStatus="status">
 						<tr>
-							<td>${count-status.index }</td>
+							<td>${totalcount-status.index-(paging.page-1)*5}</td>
 							<td style="text-align: left; padding-left:${vo.depth*15}px ">
 								<c:if test="${vo.depth>0 }">
-								<img src="${pageContext.request.contextPath }/assets/images/reply.png">
+									<img src="${pageContext.request.contextPath }/assets/images/reply.png">
 								</c:if>
-								<a href="${pageContext.request.contextPath }/board?a=viewform&no=${vo.no}">${vo.title }</a>
+								<c:choose>
+									<c:when test="${vo.status =='D' }">
+										<del id="del">${vo.title }</del>
+									</c:when>
+									<c:when test="${vo.status =='U' }">
+										<a href="${pageContext.request.contextPath }/board?a=viewform&no=${vo.no}&hit=${vo.hit }">${vo.title }</a> [수정]
+									</c:when>
+									<c:otherwise>
+										<a href="${pageContext.request.contextPath }/board?a=viewform&no=${vo.no}&hit=${vo.hit }">${vo.title }</a>
+									</c:otherwise>
+								</c:choose>
 							</td>
 							<td>${vo.userName }</td>
 							<td>${vo.hit }</td>
 							<td>${vo.regDate }</td>
 							<td>
 								<c:if test="${vo.userNo==authUser.no }">
-									<a href="${pageContext.request.contextPath }/board?a=delete&no=${vo.no }" class="del">삭제</a>
+									<c:if test="${vo.status !='D' }">
+										<a href="${pageContext.request.contextPath }/board?a=delete&no=${vo.no }&pageNum=${paging.page}" class="del">삭제</a>
+									</c:if>
 								</c:if>
 							</td>
 						</tr>
@@ -51,13 +63,32 @@
 				<!-- pager 추가 -->
 				<div class="pager">
 					<ul>
-						<li><a href="">◀</a></li>
-						<li><a href="">1</a></li>
-						<li class="selected">2</li>
-						<li><a href="">3</a></li>
-						<li>4</li>
-						<li>5</li>
-						<li><a href="">▶</a></li>
+						<c:choose>
+							<c:when test="${paging.prev == true}">
+								<li><a href="${pageContext.request.contextPath }/board?pageNum=${paging.page-1}&kwd=${kwd }">◀</a></li>
+							</c:when>
+							<c:otherwise>
+								<li>◀</li>
+							</c:otherwise>
+						</c:choose>
+						<c:forEach begin="${paging.beginPage }" end="${paging.endPage }" step="1" var="index">
+							<c:choose>
+								<c:when test="${paging.page == index }">
+									<li class="selected">${index }</li>
+								</c:when>
+								<c:otherwise>
+									<li><a href="${pageContext.request.contextPath }/board?pageNum=${index }&kwd=${kwd }">${index }</a></li>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+						<c:choose>
+							<c:when test="${paging.next == true}">
+								<li><a href="${pageContext.request.contextPath }/board?pageNum=${paging.beginPage+paging.displayRow }&kwd=${kwd }">▶</a></li>
+							</c:when>
+							<c:otherwise>
+								<li>▶</li>
+							</c:otherwise>
+						</c:choose>
 					</ul>
 				</div>
 				<!-- pager 추가 -->

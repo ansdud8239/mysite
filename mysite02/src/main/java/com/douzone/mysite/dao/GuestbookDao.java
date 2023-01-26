@@ -10,14 +10,17 @@ import java.util.List;
 
 import com.douzone.mysite.vo.GuestbookVo;
 
-
 public class GuestbookDao {
+	private final String INSERT_GUESTBOOK = "insert into guestbook values(null,?,?,?,now())";
+	private final String SELECT_GUESTBOOK = "select no,name,message,reg_date from guestbook order by no desc";
+	private final String DELETE_GUESTBOOK_BY_NO_PWD = "delete from guestbook where no=? and password=?";
+
 	public void insert(GuestbookVo vo) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		try {
 			conn = getConnetion();
-			String sql = "insert into guestbook values(null,?,?,?,now())";
+			String sql = INSERT_GUESTBOOK;
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, vo.getName());
 			pstmt.setString(2, vo.getPassword());
@@ -50,7 +53,7 @@ public class GuestbookDao {
 		ResultSet rs = null;
 		try {
 			conn = getConnetion();
-			String sql = "select no,name,message,reg_date from guestbook order by no desc";
+			String sql = SELECT_GUESTBOOK;
 			pstmt = conn.prepareStatement(sql);
 
 			rs = pstmt.executeQuery();
@@ -86,18 +89,17 @@ public class GuestbookDao {
 		return result;
 	}
 
-	public boolean delete(int no,String password) {
+	public boolean delete(int no, String password) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		boolean result = false;
 		try {
 			conn = getConnetion();
-			String sql = "delete from guestbook where no=? and password=?";
+			String sql = DELETE_GUESTBOOK_BY_NO_PWD;
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setLong(1, no);
 			pstmt.setString(2, password);
-			result = pstmt.executeUpdate()==1?true:false;
-			
+			result = pstmt.executeUpdate() == 1 ? true : false;
 
 		} catch (SQLException e) {
 			System.out.println("error: " + e);
