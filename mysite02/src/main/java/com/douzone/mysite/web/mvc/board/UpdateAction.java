@@ -16,6 +16,7 @@ public class UpdateAction implements Action {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		int pageNum = Integer.parseInt(request.getParameter("pageNum"));
 		String title = request.getParameter("title");
 		String content = request.getParameter("content");
 		Long no =Long.parseLong(request.getParameter("no"));
@@ -25,8 +26,8 @@ public class UpdateAction implements Action {
 		vo.setContent(content);
 		vo.setNo(no);
 		new BoardDao().update(vo);
-		
-		MvcUtil.redirect(request.getContextPath()+"/board", request, response);
+		//board?a=viewform&no=43&hit=1
+		MvcUtil.redirect(request.getContextPath()+"/board?a=viewform&no="+no+"&hit="+vo.getHit()+"&pageNum="+pageNum, request, response);
 
 	}
 

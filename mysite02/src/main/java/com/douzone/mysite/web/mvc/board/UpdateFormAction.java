@@ -17,6 +17,8 @@ public class UpdateFormAction implements Action {
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		BoardVo vo = new BoardDao().findByNo(Long.parseLong(request.getParameter("no")));
 		request.setAttribute("vo",vo);
+
+		request.setAttribute("pageNum",request.getParameter("pageNum"));
 		MvcUtil.forward("board/modify", request, response);
 	}
 

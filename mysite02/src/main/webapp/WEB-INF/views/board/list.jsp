@@ -40,10 +40,10 @@
 										<del id="del">${vo.title }</del>
 									</c:when>
 									<c:when test="${vo.status =='U' }">
-										<a href="${pageContext.request.contextPath }/board?a=viewform&no=${vo.no}&hit=${vo.hit }">${vo.title }</a> [수정]
+										<a href="${pageContext.request.contextPath }/board?a=viewform&no=${vo.no}&hit=${vo.hit }&pageNum=${paging.page }">${vo.title }</a> [수정]
 									</c:when>
 									<c:otherwise>
-										<a href="${pageContext.request.contextPath }/board?a=viewform&no=${vo.no}&hit=${vo.hit }">${vo.title }</a>
+										<a href="${pageContext.request.contextPath }/board?a=viewform&no=${vo.no}&hit=${vo.hit }&pageNum=${paging.page }">${vo.title }</a>
 									</c:otherwise>
 								</c:choose>
 							</td>

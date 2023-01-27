@@ -13,6 +13,7 @@ import com.douzone.mysite.vo.BoardVo;
 import com.douzone.web.mvc.Action;
 import com.douzone.web.util.MvcUtil;
 
+
 public class ViewAction implements Action {
 
 	@Override
@@ -46,7 +47,9 @@ public class ViewAction implements Action {
 		}
 
 		BoardVo vo = new BoardDao().findByNo(no);
+		vo.setContent(vo.getContent().replace("\n","<br>"));
 		request.setAttribute("vo", vo);
+		request.setAttribute("pageNum", request.getParameter("pageNum"));
 		MvcUtil.forward("board/view", request, response);
 
 	}

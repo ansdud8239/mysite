@@ -32,8 +32,8 @@ public class CommentAction implements Action {
 		vo.setDepth(Long.parseLong(request.getParameter("depth")));
 		vo.setUserNo(authUser.getNo());
 		new BoardDao().insertComment(vo);
-		
-		MvcUtil.redirect(request.getContextPath()+"/board", request, response);
+		//board?a=viewform&no=45&hit=0&pageNum=3
+		MvcUtil.redirect(request.getContextPath()+"/board?a=viewform&no="+request.getParameter("no")+"&hit=0&pageNum="+request.getParameter("pageNum"), request, response);
 
 	}
 

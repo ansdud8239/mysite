@@ -15,11 +15,11 @@ import com.douzone.mysite.vo.UserVo;
 public class BoardDao {
 	private final String INSERT_BOARD = "insert into board values(null,?,?,0,now(),(select g_no from (select if(max(g_no) is null,1,(max(g_no+1))) 'g_no' from board) tmp),1,0,?,'C')";
 	private final String INSERT_BOARD_COMMENT = "insert into board values(null,?,?,0,now(),?,(select o_no from (select max(o_no)+1 'o_no' from board where g_no=?) tmp),?,?,'C')";
-	private final String SELECT_BOARD_ALL = "select a.no,a.title,a.contents,a.hit,a.reg_date,a.g_no,a.o_no,a.depth,a.user_no,a.status,b.name from board a join user b on a.user_no = b.no order by g_no,o_no limit ?,5";
+	private final String SELECT_BOARD_ALL = "select a.no,a.title,a.contents,a.hit,a.reg_date,a.g_no,a.o_no,a.depth,a.user_no,a.status,b.name from board a join user b on a.user_no = b.no order by g_no desc,o_no asc limit ?,5";
 	private final String SELECT_BOARD_BY_NO = "select a.no,a.title,a.contents,a.hit,a.reg_date,a.g_no,a.o_no,a.depth,a.user_no,a.status,b.name from board a join user b on a.user_no = b.no where a.no=?";
 	private final String SELECT_BOARD_ALL_COUNT = "select count(*) from board";
 	private final String SELECT_BOARD_SEARCH_COUNT = "select count(*) from board where title like ? ";
-	private final String SELECT_BOARD_SEARCH = "select a.no,a.title,a.contents,a.hit,a.reg_date,a.g_no,a.o_no,a.depth,a.user_no,a.status,b.name from board a join user b on a.user_no = b.no where a.title like ? order by g_no,o_no limit ?,5";
+	private final String SELECT_BOARD_SEARCH = "select a.no,a.title,a.contents,a.hit,a.reg_date,a.g_no,a.o_no,a.depth,a.user_no,a.status,b.name from board a join user b on a.user_no = b.no where a.title like ? order by g_no desc,o_no asc limit ?,5";
 	private final String DELTE_BOARD_BY_NO = "update board set status='D' where no=?";
 	private final String UPDATE_BOARD_BY_NO = "update board set title=?,contents=?,reg_date=now(),status='U' where no=?";
 	private final String UPDATE_BOARD_HIT_BY_NO = "update board set hit=? where no=?";

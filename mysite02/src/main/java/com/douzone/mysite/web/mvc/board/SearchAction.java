@@ -25,7 +25,6 @@ public class SearchAction implements Action {
 		if (request.getParameter("pageNum") != null) {
 			pageNum = Integer.parseInt(request.getParameter("pageNum"));
 		}
-		System.out.println(kwd+":"+pageNum);
 		List<BoardVo> list = new BoardDao().search(kwd,pageNum);
 		request.setAttribute("list", list);
 

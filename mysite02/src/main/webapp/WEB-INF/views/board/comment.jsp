@@ -18,6 +18,8 @@
 					<input type="hidden" name="a" value="comment">
 					<input type="hidden" name="groupNo" value="${groupNo }">
 					<input type="hidden" name="depth" value="${depth }">
+					<input type="hidden" name="pageNum" value="${pageNum }">
+					<input type="hidden" name="no" value="${no }">
 					<table class="tbl-ex">
 						<tr>
 							<th colspan="2">댓글쓰기</th>
@@ -32,7 +34,7 @@
 						</tr>
 					</table>
 					<div class="bottom">
-						<a href="${pageContext.request.contextPath }/board">취소</a>
+						<a href="${pageContext.request.contextPath }/board?pageNum=${pageNum }">취소</a>
 						<input type="submit" value="등록">
 					</div>
 				</form>
