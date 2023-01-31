@@ -6,8 +6,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.springframework.stereotype.Repository;
+
 import com.douzone.mysite.vo.UserVo;
 
+@Repository
 public class UserRepository {
 	private final String INSERT_USER =  "insert into user values(null,?,?,password(?),?,now())";
 	private final String SELECT_USER_BY_EMAIL_PWD= "select no,name from user where email=? and password = password(?)";
@@ -46,7 +49,7 @@ public class UserRepository {
 
 	}
 
-	public UserVo findByEmailAndPassword(UserVo vo) {
+	public UserVo findByEmailAndPassword(String email,String password) {
 
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -56,8 +59,8 @@ public class UserRepository {
 			conn = getConnetion();
 			String sql = SELECT_USER_BY_EMAIL_PWD;
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, vo.getEmail());
-			pstmt.setString(2, vo.getPassword());
+			pstmt.setString(1, email);
+			pstmt.setString(2, password);
 			rs = pstmt.executeQuery();
 
 			// 5. 결과
