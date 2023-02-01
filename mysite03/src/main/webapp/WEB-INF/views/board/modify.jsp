@@ -14,10 +14,9 @@
 		<c:import url="/WEB-INF/views/includes/hearder.jsp" />
 		<div id="content">
 			<div id="board">
-				<form class="board-form" method="post" action="${pageContext.request.contextPath }/board">
-				<input type="hidden" name="a" value="modify">
+				<form class="board-form" method="post" action="${pageContext.request.contextPath }/board/modify">
 				<input type="hidden" name="no" value="${vo.no }">
-				<input type="hidden" name="pageNum" value="${pageNum }">
+				<input type="hidden" name="p" value="${pageNum }">
 					<table class="tbl-ex">
 						<tr>
 							<th colspan="2">글수정</th>
@@ -32,7 +31,7 @@
 						</tr>
 					</table>
 					<div class="bottom">
-						<a href="${pageContext.request.contextPath }/board?a=viewform&no=${vo.no}&hit=${vo.hit }&pageNum=${pageNum }">취소</a>
+						<a href="${pageContext.request.contextPath }/board/view?n=${vo.no}&h=${vo.hit }&p=${pageNum }">취소</a>
 						<input type="submit" value="수정">
 					</div>
 				</form>

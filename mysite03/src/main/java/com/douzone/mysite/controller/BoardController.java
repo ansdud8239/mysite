@@ -1,6 +1,7 @@
 package com.douzone.mysite.controller;
 
-import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -16,41 +17,25 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.douzone.mysite.service.BoardService;
 import com.douzone.mysite.vo.BoardVo;
-import com.douzone.mysite.vo.PagingVo;
 import com.douzone.mysite.vo.UserVo;
 
 @Controller
 @RequestMapping("/board")
-public class BoardController {
+public class BoardController{
 
 	@Autowired
 	private BoardService boardService;
 
 	@RequestMapping("/")
-	public String list(@RequestParam(value = "p", required = true, defaultValue = "1") int pageNum,
-			@RequestParam(value = "k", required = true, defaultValue = "") String kwd, Model model) {
+	public String list(@RequestParam(value = "p", required = true, defaultValue = "1") int pageNo,
+			@RequestParam(value = "k", required = true, defaultValue = "") String keyword, Model model) {
 
-		PagingVo pageVo = new PagingVo();
-		int boardTotalCount = 0;
-		if (!("".equals(kwd)) && kwd != null) {
+		Map<String, Object> map = boardService.getContentsList(pageNo, keyword);
+		// model.addAllAttributes(map);
 
-			List<BoardVo> list = boardService.getBoardList(kwd, pageNum);
-			model.addAttribute("list", list);
-
-			boardTotalCount = boardService.getBoardCount(kwd);
-		} else {
-			List<BoardVo> list = boardService.getBoardList(pageNum);
-			model.addAttribute("list", list);
-
-			boardTotalCount = boardService.getBoardCount();
+		for (Entry<String, Object> m : map.entrySet()) {
+			model.addAttribute(m.getKey(), m.getValue());
 		}
-		pageVo.setTotalCount(boardTotalCount);
-		pageVo.setPage(pageNum);
-		pageVo.paging();
-
-		model.addAttribute("kwd", kwd);
-		model.addAttribute("paging", pageVo);
-
 		return "board/list";
 	}
 
@@ -67,7 +52,7 @@ public class BoardController {
 			return "redirect:/";
 		}
 		vo.setUserNo(authUser.getNo());
-		boardService.addBoard(vo);
+		boardService.addContents(vo);
 		return "redirect:/board/";
 	}
 
@@ -98,30 +83,90 @@ public class BoardController {
 			response.addCookie(cookieCnt);
 
 			// 조회수 +1
-			boardService.addBoardHit(no, hit);
+			boardService.addContentsHit(no, hit);
 		}
-
-		model.addAttribute("vo", boardService.getBoard(no));
+		model.addAttribute("vo", boardService.getContents(no));
 		model.addAttribute("pageNum", pageNum);
 		return "board/view";
 	}
 
 	@RequestMapping("/delete")
 	public String delete(@RequestParam(value = "n", required = true, defaultValue = "1") Long no,
-			@RequestParam(value = "p", required = true, defaultValue = "1") int pageNum, Model model) {
+			@RequestParam(value = "p", required = true, defaultValue = "1") int pageNum, HttpSession session,
+			Model model) {
 
-		boardService.deleteBoard(no);
-		model.addAttribute("pageNum", pageNum);
+		UserVo authUser = (UserVo) session.getAttribute("authUser");
+
+		if (authUser == null) {
+			return "redirect:/";
+		}
+
+		boardService.deleteContents(no, authUser.getNo());
+		model.addAttribute("p", pageNum);
 		return "redirect:/board/";
 	}
 
-	@RequestMapping(value ="/comment",method = RequestMethod.GET)
-	public String comment(@RequestParam(value = "n", required = true, defaultValue = "1") Long no,
-			@RequestParam(value = "p", required = true, defaultValue = "1") int pageNum, Model model) {
+	@RequestMapping(value = "/modify", method = RequestMethod.GET)
+	public String update(@RequestParam(value = "n", required = true, defaultValue = "1") Long no,
+			@RequestParam(value = "p", required = true, defaultValue = "1") int pageNum, 
+			HttpSession session, Model model) {
+		UserVo authUser = (UserVo) session.getAttribute("authUser");
 
-		boardService.deleteBoard(no);
+		if (authUser == null) {
+			return "redirect:/";
+		}
+		BoardVo vo = boardService.getContents(no,authUser.getNo());		
+		model.addAttribute("vo",vo);
 		model.addAttribute("pageNum", pageNum);
-		return "redirect:/board/";
+		return "board/modify";
+	}
+
+	@RequestMapping(value = "/modify", method = RequestMethod.POST)
+	public String update(@RequestParam(value = "p", required = true, defaultValue = "1") int pageNum, 
+			BoardVo vo,
+			HttpSession session, Model model) {
+
+		boardService.updateContents(vo);
+		
+		model.addAttribute("n",vo.getNo());
+		model.addAttribute("h",vo.getHit());
+		model.addAttribute("p",pageNum);
+		return "redirect:/board/view";
+	}
+
+	@RequestMapping(value = "/comment", method = RequestMethod.GET)
+	public String comment(@RequestParam(value = "n", required = true, defaultValue = "1") Long no,
+			@RequestParam(value = "p", required = true, defaultValue = "1") int pageNum,
+			@RequestParam(value = "g", required = true, defaultValue = "1") int groupNo,
+			@RequestParam(value = "d", required = true, defaultValue = "0") int depth,
+			Model model) {
+		System.out.println("depth"+depth);
+		model.addAttribute("groupNo", groupNo);
+		model.addAttribute("depth", depth);
+		model.addAttribute("pageNum", pageNum);
+		model.addAttribute("no", no);
+		return "/board/comment";
 	}
 	
+	@RequestMapping(value = "/comment", method = RequestMethod.POST)
+	public String comment(@RequestParam(value = "p", required = true, defaultValue = "1") int pageNum,
+			BoardVo vo,
+			HttpSession session,
+			Model model) {
+		// 로그인이 되어 있는지 체크
+		UserVo authUser = (UserVo) session.getAttribute("authUser");
+		if (authUser == null) {
+			return "redirect:/";
+		}
+		
+		vo.setUserNo(authUser.getNo());
+		boardService.addComment(vo);
+
+		model.addAttribute("n",vo.getNo());
+		model.addAttribute("h",0);
+		model.addAttribute("p",pageNum);
+
+		return "redirect:/board/view";
+	}
+
 }

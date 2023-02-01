@@ -14,12 +14,11 @@
 		<c:import url="/WEB-INF/views/includes/hearder.jsp" />
 		<div id="content">
 			<div id="board">
-				<form class="board-form" method="post" action="${pageContext.request.contextPath }/board">
-					<input type="hidden" name="a" value="comment">
+				<form class="board-form" method="post" action="${pageContext.request.contextPath }/board/comment">
 					<input type="hidden" name="groupNo" value="${groupNo }">
-					<input type="hidden" name="depth" value="${depth }">
-					<input type="hidden" name="pageNum" value="${pageNum }">
+					<input type="hidden" name="depth" value="${depth }">					
 					<input type="hidden" name="no" value="${no }">
+					<input type="hidden" name="p" value="${pageNum }">
 					<table class="tbl-ex">
 						<tr>
 							<th colspan="2">댓글쓰기</th>

@@ -14,8 +14,8 @@
 		<c:import url="/WEB-INF/views/includes/hearder.jsp" />
 		<div id="content">
 			<div id="board">
-				<form id="search_form" action="${pageContext.request.contextPath }/board" method="post">
-					<input type="text" id="kwd" name="kwd" value="${kwd }">
+				<form id="search_form" action="${pageContext.request.contextPath }/board/" method="post">
+					<input type="text" id="kwd" name="k" value="${kwd }">
 					<input type="submit" value="찾기">
 				</form>
 				<table class="tbl-ex">

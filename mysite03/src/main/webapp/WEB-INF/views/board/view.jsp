@@ -46,7 +46,7 @@
 				-->
 				<div class="bottom">
 					<c:if test="${not empty authUser }">
-					<a href="${pageContext.request.contextPath }/board/comment?no=${vo.no }&groupNo=${vo.groupNo}&depth=${vo.depth }&pageNum=${pageNum }">댓글</a>
+					<a href="${pageContext.request.contextPath }/board/comment?n=${vo.no }&g=${vo.groupNo}&d=${vo.depth }&p=${pageNum }">댓글</a>
 					</c:if>
 					<a href="${pageContext.request.contextPath }/board/?p=${pageNum }">글목록</a>
 					<c:if test="${authUser.no == vo.userNo}">

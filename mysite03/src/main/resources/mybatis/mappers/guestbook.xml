@@ -7,8 +7,7 @@
 		<result property="content" column="message"/>
 		<result property="regDate" column="reg_date"/>
 	</resultMap>
-	<select id="findAll"
-		resultMap="findallList" >	
+	<select id="findAll" resultMap="findallList" >	
 		<![CDATA[
 		select no,name,message,reg_date
 		from guestbook 

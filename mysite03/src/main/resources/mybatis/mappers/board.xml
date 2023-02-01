@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="board">
+	<resultMap type="boardvo" id="findList">
+		<id property="no" column="no" />
+		<result property="title" column="title" />
+		<result property="content" column="contents" />
+		<result property="hit" column="hit" />
+		<result property="regDate" column="reg_date" />
+		<result property="groupNo" column="g_no" />
+		<result property="ownerNo" column="o_no" />
+		<result property="depth" column="depth" />
+		<result property="userNo" column="user_no" />
+		<result property="userName" column="name" />
+		<result property="status" column="status" />
+	</resultMap>
+
+	<!-- select -->
+	<select id="findAllByPageAndKeyWord" parameterType="map"
+		resultMap="findList">
+		<choose>
+			<when test='keyword==""'>
+				<![CDATA[
+				select a.no,a.title,a.contents,a.hit,a.reg_date,a.g_no,a.o_no,a.depth,a.user_no,a.status,b.name 
+				from board a 
+				join user b on a.user_no = b.no 
+				order by g_no desc,o_no asc 
+				limit #{startOffset},#{size }
+				]]>
+			</when>
+			<otherwise>
+				<![CDATA[
+				select a.no,a.title,a.contents,a.hit,a.reg_date,a.g_no,a.o_no,a.depth,a.user_no,a.status,b.name 
+				from board a 
+				join user b on a.user_no = b.no
+				where title like '%${keyword }%'or contents like '%${keyword }%'
+				order by g_no desc,o_no asc 
+				limit #{startOffset},#{size }
+				]]>
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findByNo" parameterType="long" resultMap="findList">		
+			<![CDATA[
+			select a.no,a.title,a.contents,a.hit,a.reg_date,a.g_no,a.o_no,a.depth,a.user_no,a.status,b.name
+			from board a 
+			join user b on a.user_no = b.no 
+			where a.no=#{_parameter }
+			]]>
+	</select>
+
+	<select id="findByNoAndUserNo" parameterType="map"
+		resultMap="findList">		
+			<![CDATA[
+			select a.no,a.title,a.contents,a.hit,a.reg_date,a.g_no,a.o_no,a.depth,a.user_no,a.status,b.name
+			from board a 
+			join user b on a.user_no = b.no 
+			where a.no=#{no } and a.user_no=#{userNo}
+			]]>
+	</select>
+	
+	<select id="getTotalCount" parameterType="string"
+		resultType="integer">
+		<choose>
+			<when test='_parameter == null or _parameter==""'>
+				<![CDATA[
+				select count(*) 
+				from board 		
+				]]>
+			</when>
+			<otherwise>
+				<![CDATA[
+				select count(*) 
+				from board 
+				where title like '%${_parameter}%'or contents like '%${_parameter}%'
+				]]>
+			</otherwise>
+		</choose>
+	</select>
+
+	<!-- insert -->
+	<insert id="insert" parameterType="boardvo">
+		<![CDATA[
+		insert
+		into board
+		values(null,#{title },#{content },0,now(),(select g_no from (select if(max(g_no) is null,1,(max(g_no+1))) 'g_no' from board) tmp),1,0,#{userNo },'C')
+		]]>
+	</insert>
+	<insert id="insertComment" parameterType="boardvo">
+		<![CDATA[
+		insert
+		into board 
+		values(null,#{title },#{content },0,now(),#{groupNo },(select o_no from (select max(o_no)+1 'o_no' from board where g_no=#{groupNo }) tmp),#{depth },#{userNo },'C')
+		]]>
+		<selectKey keyProperty="no" resultType="long" order="AFTER">
+			<![CDATA[
+			select last_insert_id()
+			]]>
+		</selectKey>
+	</insert>
+
+	<!-- update -->
+	<update id="deleteByNoAndUserNo" parameterType="map">
+		<![CDATA[
+		update board 
+		set status='D' 
+		where no=#{no } and user_no=#{userNo }
+		]]>
+	</update>
+	<update id="updateHit" parameterType="map">
+		<![CDATA[
+		update board 
+		set hit=#{hit } 
+		where no=#{no }
+		]]>
+	</update>
+	<update id="updateByNo" parameterType="boardvo">
+		<![CDATA[
+		update board 
+		set title=#{title },contents=#{content },reg_date=now(),status='U' 
+		where no=#{no }
+		]]>
+	</update>
+</mapper>
