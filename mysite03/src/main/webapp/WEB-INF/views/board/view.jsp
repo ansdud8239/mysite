@@ -46,11 +46,11 @@
 				-->
 				<div class="bottom">
 					<c:if test="${not empty authUser }">
-					<a href="${pageContext.request.contextPath }/board?a=commentform&no=${vo.no }&groupNo=${vo.groupNo}&depth=${vo.depth }&pageNum=${pageNum }">댓글</a>
+					<a href="${pageContext.request.contextPath }/board/comment?no=${vo.no }&groupNo=${vo.groupNo}&depth=${vo.depth }&pageNum=${pageNum }">댓글</a>
 					</c:if>
-					<a href="${pageContext.request.contextPath }/board?pageNum=${pageNum }">글목록</a>
+					<a href="${pageContext.request.contextPath }/board/?p=${pageNum }">글목록</a>
 					<c:if test="${authUser.no == vo.userNo}">
-						<a href="${pageContext.request.contextPath }/board?a=modifyform&no=${vo.no }&pageNum=${pageNum }">글수정</a>
+						<a href="${pageContext.request.contextPath }/board/modify?n=${vo.no }&p=${pageNum }">글수정</a>
 					</c:if>
 				</div>
 			</div>

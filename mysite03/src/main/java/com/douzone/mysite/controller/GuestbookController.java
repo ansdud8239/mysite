@@ -20,25 +20,24 @@ public class GuestbookController {
 	
 	@RequestMapping("/")
 	public String list(Model model) {				
-		List<GuestbookVo> list = guestbookService.findAll();
+		List<GuestbookVo> list = guestbookService.getMessageList();
 		model.addAttribute("list",list);
 		return "guestbook/list";
 	}
 
 	@RequestMapping(value = "/add",method = RequestMethod.POST)
 	public String add(GuestbookVo vo) {	
-		guestbookService.insert(vo);		
+		guestbookService.addMessage(vo);		
 		return "redirect:/guestbook/";
 	}
 	@RequestMapping(value = "/delete",method = RequestMethod.GET)
 	public String delete(String no,Model model) {	
-		System.out.println("durl");
 		model.addAttribute("no",no);
 		return "guestbook/delete";
 	}
 	@RequestMapping(value = "/delete",method = RequestMethod.POST)
 	public String delete(int no,String password) {	
-		boolean result =guestbookService.delete(no, password);
+		guestbookService.deleteMessage(no, password);
 		return "redirect:/guestbook/";
 	}
 	

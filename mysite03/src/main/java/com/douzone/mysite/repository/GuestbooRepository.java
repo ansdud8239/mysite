@@ -8,12 +8,18 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.douzone.mysite.vo.GuestbookVo;
 
 @Repository
 public class GuestbooRepository{
+	
+	@Autowired
+	private DataSource dataSource;	
 	private final String INSERT_GUESTBOOK = "insert into guestbook values(null,?,?,?,now())";
 	private final String SELECT_GUESTBOOK = "select no,name,message,reg_date from guestbook order by no desc";
 	private final String DELETE_GUESTBOOK_BY_NO_PWD = "delete from guestbook where no=? and password=?";
@@ -22,12 +28,12 @@ public class GuestbooRepository{
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		try {
-			conn = getConnetion();
+			conn = dataSource.getConnection();
 			String sql = INSERT_GUESTBOOK;
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, vo.getName());
 			pstmt.setString(2, vo.getPassword());
-			pstmt.setString(3, vo.getMessage());
+			pstmt.setString(3, vo.getContent());
 
 			pstmt.executeUpdate();
 
@@ -55,7 +61,7 @@ public class GuestbooRepository{
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
-			conn = getConnetion();
+			conn = dataSource.getConnection();
 			String sql = SELECT_GUESTBOOK;
 			pstmt = conn.prepareStatement(sql);
 
@@ -66,7 +72,7 @@ public class GuestbooRepository{
 				GuestbookVo vo = new GuestbookVo();
 				vo.setNo(rs.getLong(1));
 				vo.setName(rs.getString(2));
-				vo.setMessage(rs.getString(3));
+				vo.setContent(rs.getString(3));
 				vo.setRegDate(rs.getString(4));
 				result.add(vo);
 			}
@@ -92,17 +98,16 @@ public class GuestbooRepository{
 		return result;
 	}
 
-	public boolean delete(int no, String password) {
+	public void delete(int no, String password) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
-		boolean result = false;
 		try {
-			conn = getConnetion();
+			conn = dataSource.getConnection();
 			String sql = DELETE_GUESTBOOK_BY_NO_PWD;
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setLong(1, no);
 			pstmt.setString(2, password);
-			result = pstmt.executeUpdate() == 1 ? true : false;
+			pstmt.executeUpdate();
 
 		} catch (SQLException e) {
 			System.out.println("error: " + e);
@@ -118,21 +123,6 @@ public class GuestbooRepository{
 				e.printStackTrace();
 			}
 		}
-		return result;
 	}
 
-	private Connection getConnetion() throws SQLException {
-		Connection conn = null;
-		try {
-			Class.forName("org.mariadb.jdbc.Driver");
-
-			String url = "jdbc:mariadb://192.168.10.109:3307/webdb?charset=utf8";
-			conn = DriverManager.getConnection(url, "webdb", "webdb");
-
-		} catch (ClassNotFoundException e) {
-			System.out.println("드라이버 로딩 실패: " + e);
-		}
-		return conn;
-
-	}
 }

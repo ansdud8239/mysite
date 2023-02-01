@@ -40,7 +40,7 @@ public class UserController {
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String login(HttpSession session, UserVo vo, Model model) {
-		UserVo authUser = userService.getUser(vo.getEmail(), vo.getPassword());
+		UserVo authUser = userService.getUser(vo);
 		if (authUser == null) {
 			model.addAttribute("email", vo.getEmail());
 			return "user/login";

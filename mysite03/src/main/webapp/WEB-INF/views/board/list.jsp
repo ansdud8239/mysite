@@ -40,10 +40,10 @@
 										<del id="del">${vo.title }</del>
 									</c:when>
 									<c:when test="${vo.status =='U' }">
-										<a href="${pageContext.request.contextPath }/board?a=viewform&no=${vo.no}&hit=${vo.hit }&pageNum=${paging.page }">${vo.title }</a> [수정]
+										<a href="${pageContext.request.contextPath }/board/view?n=${vo.no}&h=${vo.hit }&p=${paging.page }">${vo.title }</a> [수정]
 									</c:when>
 									<c:otherwise>
-										<a href="${pageContext.request.contextPath }/board?a=viewform&no=${vo.no}&hit=${vo.hit }&pageNum=${paging.page }">${vo.title }</a>
+										<a href="${pageContext.request.contextPath }/board/view?n=${vo.no}&h=${vo.hit }&p=${paging.page }">${vo.title }</a>
 									</c:otherwise>
 								</c:choose>
 							</td>
@@ -53,7 +53,7 @@
 							<td>
 								<c:if test="${vo.userNo==authUser.no }">
 									<c:if test="${vo.status !='D' }">
-										<a href="${pageContext.request.contextPath }/board?a=delete&no=${vo.no }&pageNum=${paging.page}" class="del">삭제</a>
+										<a href="${pageContext.request.contextPath }/board/delete?n=${vo.no }&p=${paging.page}" class="del">삭제</a>
 									</c:if>
 								</c:if>
 							</td>
@@ -65,7 +65,7 @@
 					<ul>
 						<c:choose>
 							<c:when test="${paging.prev == true}">
-								<li><a href="${pageContext.request.contextPath }/board?pageNum=${paging.page-1}&kwd=${kwd }">◀</a></li>
+								<li><a href="${pageContext.request.contextPath }/board/?p=${paging.page-1}&k=${kwd }">◀</a></li>
 							</c:when>
 							<c:otherwise>
 								<li>◀</li>
@@ -77,13 +77,13 @@
 									<li class="selected">${index }</li>
 								</c:when>
 								<c:otherwise>
-									<li><a href="${pageContext.request.contextPath }/board?pageNum=${index }&kwd=${kwd }">${index }</a></li>
+									<li><a href="${pageContext.request.contextPath }/board/?p=${index }&k=${kwd }">${index }</a></li>
 								</c:otherwise>
 							</c:choose>
 						</c:forEach>
 						<c:choose>
 							<c:when test="${paging.next == true}">
-								<li><a href="${pageContext.request.contextPath }/board?pageNum=${paging.beginPage+paging.displayRow }&kwd=${kwd }">▶</a></li>
+								<li><a href="${pageContext.request.contextPath }/board/?p=${paging.beginPage+paging.displayRow }&k=${kwd }">▶</a></li>
 							</c:when>
 							<c:otherwise>
 								<li>▶</li>
@@ -94,7 +94,7 @@
 				<!-- pager 추가 -->
 				<c:if test="${not empty authUser }">
 					<div class="bottom">
-						<a href="${pageContext.request.contextPath }/board?a=writeform" id="new-book">글쓰기</a>
+						<a href="${pageContext.request.contextPath }/board/write" id="new-book">글쓰기</a>
 					</div>
 				</c:if>
 			</div>
