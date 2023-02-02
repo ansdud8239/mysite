@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
+	<property name="LOG_PATH" value="d:/mysite-logs"/>
 	<appender name="consoleAppender"
 		class="ch.qos.logback.core.ConsoleAppender">
 		<encoder>
@@ -13,7 +14,7 @@
 	<appender name="fileAppender"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!-- mac일 경우<file>/Users/{사용자 이름}/logex/logex2.log</file> -->
-		<file>/mysite-logs/exception.log</file>
+		<file>${LOG_PATH}/exception.log</file>
 		<encoder
 			class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
 			<Pattern>
@@ -22,7 +23,7 @@
 		</encoder>
 		<rollingPolicy
 			class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-			<FileNamePattern>/mysite-logs/exception.%i.log.zip</FileNamePattern>
+			<FileNamePattern>${LOG_PATH}/exception.%i.log.zip</FileNamePattern>
 			<MinIndex>1</MinIndex>
 			<MaxIndex>10</MaxIndex>
 		</rollingPolicy>
@@ -32,7 +33,7 @@
 		</triggeringPolicy>
 	</appender>
 
-	<logger name="com.douzone.mysite.execption" level="error"
+	<logger name="com.douzone.mysite.exception" level="error"
 		additivity="false">
 		<appender-ref ref="fileAppender" />
 		<appender-ref ref="consoleAppender" />
