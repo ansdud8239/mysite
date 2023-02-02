@@ -12,7 +12,7 @@
 		<project.build.outputEncoding>UTF-8</project.build.outputEncoding>
 		<maven.compiler.source>17</maven.compiler.source>
 		<maven.compiler.target>17</maven.compiler.target>
-		<org.springframewok-version>5.3.25</org.springframewok-version>
+		<org.springframework-version>5.3.25</org.springframework-version>
 		<jcloverslf4j.version>1.7.36</jcloverslf4j.version>
 		<logback.version>1.2.11</logback.version>
 	</properties>
@@ -21,32 +21,37 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
-			<version>${org.springframewok-version}</version>
-		<!-- JCL 제외 -->
+			<version>${org.springframework-version}</version>
+			<!-- JCL 제외 -->
 			<exclusions>
-			   <exclusion>
-				  <groupId>org.springframework</groupId>
-				  <artifactId>spring-jcl</artifactId>
-			   </exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-jcl</artifactId>
+				</exclusion>
 			</exclusions>
 		</dependency>
-		
-		<!-- Logback --> 
-		<dependency>                                    
-			<groupId>org.slf4j</groupId>                
-			<artifactId>jcl-over-slf4j</artifactId>     
-			<version>${jcloverslf4j.version}</version>  
-		</dependency>
+		<!-- spring aspect -->
 		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-classic</artifactId>
-			<version>${logback.version}</version>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aspects</artifactId>
+			<version>${org.springframework-version}</version>
 		</dependency>
 		<!-- spring jdbc -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
-			<version>${org.springframewok-version}</version>
+			<version>${org.springframework-version}</version>
+		</dependency>
+		<!-- Logback -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+			<version>${jcloverslf4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>${logback.version}</version>
 		</dependency>
 		<!-- jstl -->
 		<dependency>
