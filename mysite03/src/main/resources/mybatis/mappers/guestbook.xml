@@ -9,7 +9,7 @@
 	</resultMap>
 	<select id="findAll" resultMap="findallList" >	
 		<![CDATA[
-		select no,name,message,reg_date
+		elect no,name,message,reg_date
 		from guestbook 
 		order by no desc
 		]]>
