@@ -1,13 +1,12 @@
 package com.douzone.mysite.security;
 
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.method.HandlerTypePredicate;
 import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.servlet.function.support.HandlerFunctionAdapter;
 
 import com.douzone.mysite.vo.UserVo;
 
@@ -28,13 +27,13 @@ public class AuthInterceptor implements HandlerInterceptor {
 		Auth auth = handlerMethod.getMethodAnnotation(Auth.class);
 		
 		// 4. Handler Method에 @Auth가 없으면 Type(class)에 붙어있는지 확인
-		Auth authType = handler.getClass().getAnnotation(Auth.class);
-		System.out.println(authType);
+		auth = (auth == null )? handlerMethod.getBeanType().getAnnotation(Auth.class):auth;
+
 		// 5. Type이나 Method에 @Auth가 없는경우
-		if (auth == null || authType == null) {
+		if (auth == null ) {
 			return true;
 		}
-
+		
 		// 6. @Auth가 붙어있기 때문에 인증(Authenfication) 여부 확인
 		HttpSession session = request.getSession();
 		UserVo authUser = (UserVo) session.getAttribute("authUser");
@@ -44,7 +43,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 			return false;
 		}
 
-		// 7. 권한체크(Authorization) 체크를 위해 @Auth의 rold가져오기("ADMIN","USER")
+		// 7. 권한체크(Authorization) 체크를 위해 @Auth의 role가져오기("ADMIN","USER")
 		String role = auth.role();
 		String authUserRole = authUser.getRole();
 		System.out.println(role+":"+authUserRole);

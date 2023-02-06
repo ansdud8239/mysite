@@ -27,9 +27,9 @@ public class GuestbookController {
 
 	@RequestMapping(value = "/add",method = RequestMethod.POST)
 	public String add(GuestbookVo vo) {
-		System.out.println(vo);
+		//System.out.println(vo);
 		guestbookService.addMessage(vo);	
-		System.out.println(vo);
+		//System.out.println(vo);
 		return "redirect:/guestbook/";
 	}
 	@RequestMapping(value = "/delete",method = RequestMethod.GET)

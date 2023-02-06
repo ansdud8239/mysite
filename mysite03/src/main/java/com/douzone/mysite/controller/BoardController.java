@@ -6,7 +6,6 @@ import java.util.Map.Entry;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.douzone.mysite.security.Auth;
+import com.douzone.mysite.security.AuthUser;
 import com.douzone.mysite.service.BoardService;
 import com.douzone.mysite.vo.BoardVo;
 import com.douzone.mysite.vo.UserVo;
@@ -29,8 +29,10 @@ public class BoardController{
 	private BoardService boardService;
 
 	@RequestMapping("/")
-	public String list(@RequestParam(value = "p", required = true, defaultValue = "1") int pageNo,
-			@RequestParam(value = "k", required = true, defaultValue = "") String keyword, Model model) {
+	public String list(
+			@RequestParam(value = "p", required = true, defaultValue = "1") int pageNo,
+			@RequestParam(value = "k", required = true, defaultValue = "") String keyword, 
+			Model model) {
 
 		Map<String, Object> map = boardService.getContentsList(pageNo, keyword);
 		// model.addAllAttributes(map);
@@ -41,26 +43,26 @@ public class BoardController{
 		return "board/list";
 	}
 	
-	@Auth(role="USER")
+	@Auth
 	@RequestMapping(value = "/write", method = RequestMethod.GET)
 	public String write() {
 		return "board/write";
 	}
+	
 	@Auth
 	@RequestMapping(value = "/write", method = RequestMethod.POST)
-	public String write(HttpSession session, BoardVo vo) {
-		UserVo authUser = (UserVo) session.getAttribute("authUser");
+	public String write(
+			@AuthUser UserVo authUser,
+			BoardVo vo) {
 
-		if (authUser == null) {
-			return "redirect:/";
-		}
 		vo.setUserNo(authUser.getNo());
 		boardService.addContents(vo);
 		return "redirect:/board/";
 	}
 
 	@RequestMapping(value = "/view", method = RequestMethod.GET)
-	public String view(@RequestParam(value = "n", required = true, defaultValue = "1") Long no,
+	public String view(
+			@RequestParam(value = "n", required = true, defaultValue = "1") Long no,
 			@RequestParam(value = "h", required = true, defaultValue = "1") int hit,
 			@RequestParam(value = "p", required = true, defaultValue = "1") int pageNum, 
 			@RequestParam(value = "k", required = true, defaultValue = "") String keyword,
@@ -99,30 +101,25 @@ public class BoardController{
 
 	@Auth
 	@RequestMapping("/delete")
-	public String delete(@RequestParam(value = "n", required = true, defaultValue = "1") Long no,
-			@RequestParam(value = "p", required = true, defaultValue = "1") int pageNum, HttpSession session,
+	public String delete(
+			@RequestParam(value = "n", required = true, defaultValue = "1") Long no,
+			@RequestParam(value = "p", required = true, defaultValue = "1") int pageNum,
+			@AuthUser UserVo authUser,
 			Model model) {
-
-		UserVo authUser = (UserVo) session.getAttribute("authUser");
-
-		if (authUser == null) {
-			return "redirect:/";
-		}
 
 		boardService.deleteContents(no, authUser.getNo());
 		model.addAttribute("p", pageNum);
 		return "redirect:/board/";
 	}
+	
 	@Auth
 	@RequestMapping(value = "/modify", method = RequestMethod.GET)
-	public String update(@RequestParam(value = "n", required = true, defaultValue = "1") Long no,
+	public String update(
+			@RequestParam(value = "n", required = true, defaultValue = "1") Long no,
 			@RequestParam(value = "p", required = true, defaultValue = "1") int pageNum, 
-			HttpSession session, Model model) {
-		UserVo authUser = (UserVo) session.getAttribute("authUser");
+			@AuthUser UserVo authUser, 
+			Model model) {
 
-		if (authUser == null) {
-			return "redirect:/";
-		}
 		BoardVo vo = boardService.getContents(no,authUser.getNo());		
 		model.addAttribute("vo",vo);
 		model.addAttribute("pageNum", pageNum);
@@ -131,9 +128,10 @@ public class BoardController{
 
 	@Auth
 	@RequestMapping(value = "/modify", method = RequestMethod.POST)
-	public String update(@RequestParam(value = "p", required = true, defaultValue = "1") int pageNum, 
+	public String update(
+			@RequestParam(value = "p", required = true, defaultValue = "1") int pageNum, 
 			BoardVo vo,
-			HttpSession session, Model model) {
+			Model model) {
 
 		boardService.updateContents(vo);
 		
@@ -145,7 +143,8 @@ public class BoardController{
 
 	@Auth
 	@RequestMapping(value = "/comment", method = RequestMethod.GET)
-	public String comment(@RequestParam(value = "n", required = true, defaultValue = "1") Long no,
+	public String comment(
+			@RequestParam(value = "n", required = true, defaultValue = "1") Long no,
 			@RequestParam(value = "p", required = true, defaultValue = "1") int pageNum,
 			@RequestParam(value = "g", required = true, defaultValue = "1") int groupNo,
 			@RequestParam(value = "d", required = true, defaultValue = "0") int depth,
@@ -156,18 +155,15 @@ public class BoardController{
 		model.addAttribute("no", no);
 		return "/board/comment";
 	}
+	
 	@Auth
 	@RequestMapping(value = "/comment", method = RequestMethod.POST)
-	public String comment(@RequestParam(value = "p", required = true, defaultValue = "1") int pageNum,
+	public String comment(
+			@RequestParam(value = "p", required = true, defaultValue = "1") int pageNum,
+			@AuthUser UserVo authUser,
 			BoardVo vo,
-			HttpSession session,
 			Model model) {
-		// 로그인이 되어 있는지 체크
-		UserVo authUser = (UserVo) session.getAttribute("authUser");
-		if (authUser == null) {
-			return "redirect:/";
-		}
-		
+
 		vo.setUserNo(authUser.getNo());
 		boardService.addComment(vo);
 

@@ -1,15 +1,11 @@
 package com.douzone.mysite.controller;
 
-import java.util.List;
-
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,7 +27,10 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/join", method = RequestMethod.POST)
-	public String join(@ModelAttribute @Valid UserVo vo,BindingResult result,Model model) {
+	public String join(
+			@ModelAttribute @Valid UserVo vo,
+			BindingResult result,
+			Model model) {
 		if(result.hasErrors()) {
 //			List<ObjectError> list = result.getAllErrors();
 //			for(Object error:list) {
@@ -58,7 +57,6 @@ public class UserController {
 	@Auth
 	@RequestMapping(value = "/update", method = RequestMethod.GET)
 	public String update(@AuthUser UserVo authUser, Model model) {
-		System.out.println(authUser.getNo()+"****");
 		UserVo userVo = userService.getUser(authUser.getNo());
 		model.addAttribute("userVo", userVo);
 		return "user/update";
