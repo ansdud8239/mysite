@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.douzone.mysite.security.Auth;
 import com.douzone.mysite.service.BoardService;
 import com.douzone.mysite.vo.BoardVo;
 import com.douzone.mysite.vo.UserVo;
@@ -39,7 +40,8 @@ public class BoardController{
 		}
 		return "board/list";
 	}
-
+	
+	@Auth(role="USER")
 	@RequestMapping(value = "/write", method = RequestMethod.GET)
 	public String write() {
 		return "board/write";
@@ -60,7 +62,9 @@ public class BoardController{
 	@RequestMapping(value = "/view", method = RequestMethod.GET)
 	public String view(@RequestParam(value = "n", required = true, defaultValue = "1") Long no,
 			@RequestParam(value = "h", required = true, defaultValue = "1") int hit,
-			@RequestParam(value = "p", required = true, defaultValue = "1") int pageNum, Model model,
+			@RequestParam(value = "p", required = true, defaultValue = "1") int pageNum, 
+			@RequestParam(value = "k", required = true, defaultValue = "") String keyword,
+			Model model,
 			HttpServletResponse response, HttpServletRequest request,
 			@CookieValue(value = "visit", required=true,defaultValue="") String value) {
 		
@@ -89,6 +93,7 @@ public class BoardController{
 
 		model.addAttribute("vo", boardService.getContents(no));
 		model.addAttribute("pageNum", pageNum);
+		model.addAttribute("kwd", keyword);
 		return "board/view";
 	}
 
@@ -123,6 +128,7 @@ public class BoardController{
 		return "board/modify";
 	}
 
+	@Auth
 	@RequestMapping(value = "/modify", method = RequestMethod.POST)
 	public String update(@RequestParam(value = "p", required = true, defaultValue = "1") int pageNum, 
 			BoardVo vo,
@@ -136,13 +142,13 @@ public class BoardController{
 		return "redirect:/board/view";
 	}
 
+	@Auth
 	@RequestMapping(value = "/comment", method = RequestMethod.GET)
 	public String comment(@RequestParam(value = "n", required = true, defaultValue = "1") Long no,
 			@RequestParam(value = "p", required = true, defaultValue = "1") int pageNum,
 			@RequestParam(value = "g", required = true, defaultValue = "1") int groupNo,
 			@RequestParam(value = "d", required = true, defaultValue = "0") int depth,
 			Model model) {
-		System.out.println("depth"+depth);
 		model.addAttribute("groupNo", groupNo);
 		model.addAttribute("depth", depth);
 		model.addAttribute("pageNum", pageNum);
