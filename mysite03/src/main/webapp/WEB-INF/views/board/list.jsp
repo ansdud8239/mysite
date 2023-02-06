@@ -40,10 +40,10 @@
 										<del id="del">${vo.title }</del>
 									</c:when>
 									<c:when test="${vo.status =='U' }">
-										<a href="${pageContext.request.contextPath }/board/view?n=${vo.no}&h=${vo.hit }&p=${paging.page }">${vo.title }</a> [수정]
+										<a href="${pageContext.request.contextPath }/board/view?n=${vo.no}&h=${vo.hit }&p=${paging.page }&k=${kwd }">${vo.title }</a> [수정]
 									</c:when>
 									<c:otherwise>
-										<a href="${pageContext.request.contextPath }/board/view?n=${vo.no}&h=${vo.hit }&p=${paging.page }">${vo.title }</a>
+										<a href="${pageContext.request.contextPath }/board/view?n=${vo.no}&h=${vo.hit }&p=${paging.page }&k=${kwd }">${vo.title }</a>
 									</c:otherwise>
 								</c:choose>
 							</td>
@@ -53,7 +53,7 @@
 							<td>
 								<c:if test="${vo.userNo==authUser.no }">
 									<c:if test="${vo.status !='D' }">
-										<a href="${pageContext.request.contextPath }/board/delete?n=${vo.no }&p=${paging.page}" class="del">삭제</a>
+										<a href="${pageContext.request.contextPath }/board/delete?n=${vo.no }&p=${paging.page}&k=${kwd }" class="del">삭제</a>
 									</c:if>
 								</c:if>
 							</td>
