@@ -46,7 +46,7 @@ public class BoardController{
 	public String write() {
 		return "board/write";
 	}
-
+	@Auth
 	@RequestMapping(value = "/write", method = RequestMethod.POST)
 	public String write(HttpSession session, BoardVo vo) {
 		UserVo authUser = (UserVo) session.getAttribute("authUser");
@@ -97,6 +97,7 @@ public class BoardController{
 		return "board/view";
 	}
 
+	@Auth
 	@RequestMapping("/delete")
 	public String delete(@RequestParam(value = "n", required = true, defaultValue = "1") Long no,
 			@RequestParam(value = "p", required = true, defaultValue = "1") int pageNum, HttpSession session,
@@ -112,7 +113,7 @@ public class BoardController{
 		model.addAttribute("p", pageNum);
 		return "redirect:/board/";
 	}
-
+	@Auth
 	@RequestMapping(value = "/modify", method = RequestMethod.GET)
 	public String update(@RequestParam(value = "n", required = true, defaultValue = "1") Long no,
 			@RequestParam(value = "p", required = true, defaultValue = "1") int pageNum, 
@@ -155,7 +156,7 @@ public class BoardController{
 		model.addAttribute("no", no);
 		return "/board/comment";
 	}
-	
+	@Auth
 	@RequestMapping(value = "/comment", method = RequestMethod.POST)
 	public String comment(@RequestParam(value = "p", required = true, defaultValue = "1") int pageNum,
 			BoardVo vo,
