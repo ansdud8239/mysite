@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="site">
+	<!-- select -->
+	<select id="find" resultType="sitevo">
+		<![CDATA[
+		select title,welcome,profile,description 
+		from site
+		order by no asc
+		limit 0,1
+		]]>
+	</select>
+
+	<!-- insert -->
+	<!-- 	<insert id="insert" parameterType="boardvo">
+		<![CDATA[
+		insert
+		into board
+		values(null,#{title },#{content },0,now(),(select g_no from (select if(max(g_no) is null,1,(max(g_no+1))) 'g_no' from board) tmp),1,0,#{userNo },'C')
+		]]>
+	</insert>
+	<insert id="insertComment" parameterType="boardvo">
+		<![CDATA[
+		insert
+		into board 
+		values(null,#{title },#{content },0,now(),#{groupNo },(select o_no from (select max(o_no)+1 'o_no' from board where g_no=#{groupNo }) tmp),#{depth },#{userNo },'C')
+		]]>
+		<selectKey keyProperty="no" resultType="long" order="AFTER">
+			<![CDATA[
+			select last_insert_id()
+			]]>
+		</selectKey>
+	</insert>
+-->
+	<!-- update -->
+	<!-- 
+	<update id="deleteByNoAndUserNo" parameterType="map">
+		<![CDATA[
+		update board 
+		set status='D' 
+		where no=#{no } and user_no=#{userNo }
+		]]>
+	</update>
+	<update id="updateHit" parameterType="map">
+		<![CDATA[
+		update board 
+		set hit=#{hit } 
+		where no=#{no }
+		]]>
+	</update>
+	<update id="updateByNo" parameterType="boardvo">
+		<![CDATA[
+		update board 
+		set title=#{title },contents=#{content },reg_date=now(),status='U' 
+		where no=#{no }
+		]]>
+	</update>
+-->
+</mapper>
