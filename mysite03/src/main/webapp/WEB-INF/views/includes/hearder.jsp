@@ -10,7 +10,7 @@
 </head>
 <body>
 	<div id="header">
-		<h1>MySite</h1>
+		<h1>${site.title }</h1>
 		<ul>
 			<c:choose>
 				<c:when test="${empty authUser}">
