@@ -28,7 +28,7 @@ public class BoardController{
 	@Autowired
 	private BoardService boardService;
 
-	@RequestMapping("/")
+	@RequestMapping({"","/"})
 	public String list(
 			@RequestParam(value = "p", required = true, defaultValue = "1") int pageNo,
 			@RequestParam(value = "k", required = true, defaultValue = "") String keyword, 
