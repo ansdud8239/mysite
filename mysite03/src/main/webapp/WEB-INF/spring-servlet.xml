@@ -65,6 +65,7 @@
 			<mvc:exclude-mapping path="/asserts/**" />
 			<bean class="com.douzone.mysite.security.AuthInterceptor" />
 		</mvc:interceptor>
+		
 	</mvc:interceptors>
 
 	<!-- ViewResolver 설정 -->

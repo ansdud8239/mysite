@@ -15,14 +15,14 @@ public class GalleryService {
 	private GalleryRepository galleryRepository;
 
 	public List<GalleryVo> getImages() {
-		return null;
+		return galleryRepository.findAll();
 	}
 
 	public void removeImage(Long no) {
-
+		galleryRepository.delete(no);
 	}
 
 	public void addImage(GalleryVo vo) {
-
+		galleryRepository.insert(vo);
 	}
 }

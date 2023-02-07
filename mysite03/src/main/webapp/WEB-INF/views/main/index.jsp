@@ -18,7 +18,7 @@
 		<div id="wrapper">
 			<div id="content">
 				<div id="site-introduction">
-					<img id="profile" src="${pageContext.request.contextPath }/${site.profile }" style="width: 160px">
+					<img id="profile" src="${pageContext.request.contextPath }/${site.profile }" style="width:100%">
 					<h2>${site.welcome }</h2>
 					<p>
 						${fn:replace(site.description,newline,"<br>") }
