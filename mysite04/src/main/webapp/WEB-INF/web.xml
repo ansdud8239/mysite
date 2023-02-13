@@ -10,7 +10,7 @@
 	</context-param>
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>classpath:applicationContext.xml</param-value>
+		<param-value>com.douzone.mysite.config.AppConfig</param-value>
 	</context-param>
 
 	<!-- Context Load Listener -->
