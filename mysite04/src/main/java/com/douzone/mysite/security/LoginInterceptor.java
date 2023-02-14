@@ -22,8 +22,10 @@ public class LoginInterceptor implements HandlerInterceptor {
 		vo.setEmail(request.getParameter("email"));
 		vo.setPassword(request.getParameter("password"));
 		UserVo authUser = userService.getUser(vo);
+		System.out.println("로그인 시도");
 		if (authUser == null) {
 			request.setAttribute("email", vo.getEmail());
+			System.out.println("로그인 시도");
 			request.getRequestDispatcher("/WEB-INF/views/user/login.jsp").forward(request, response);
 			return false;
 		}

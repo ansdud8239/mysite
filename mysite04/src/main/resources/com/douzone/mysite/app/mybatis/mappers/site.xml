@@ -14,7 +14,7 @@
 	<!-- update -->
 	<update id="update" parameterType="sitevo">
 		<choose>
-			<when test='profile==""'>
+			<when test='profile.equals("")'>
 					<![CDATA[
 					update site 
 					set title=#{title } ,welcome=#{welcome } ,description=#{description } 

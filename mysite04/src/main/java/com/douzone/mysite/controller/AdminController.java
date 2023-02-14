@@ -49,7 +49,7 @@ public class AdminController {
 		SiteVo site = applicationContext.getBean(SiteVo.class);
 		
 		siteService.updateSite(vo);
-		servletContext.setAttribute("sitevo",vo);
+		servletContext.setAttribute("site",vo);
 //		site.setTitle(vo.getTitle());
 //		site.setWelcome(vo.getWelcome());
 //		site.setProfile(vo.getProfile());

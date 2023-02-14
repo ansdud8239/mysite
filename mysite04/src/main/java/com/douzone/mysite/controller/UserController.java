@@ -71,4 +71,14 @@ public class UserController {
 		authUser.setName(vo.getName());
 		return "redirect:/";
 	}
+	
+	// interceptor mapping을 하기 위한 주소
+	@RequestMapping("/auth")
+	public void auth() {
+		
+	}
+	@RequestMapping("/logout")
+	public void logout() {
+		
+	}
 }
