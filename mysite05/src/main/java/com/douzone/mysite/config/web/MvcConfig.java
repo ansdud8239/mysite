@@ -79,7 +79,7 @@ public class MvcConfig implements WebMvcConfigurer{
 	// webapp/assets -> resource/assets
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/assets/**").addResourceLocations("classpath:/assets");
+		registry.addResourceHandler("/assets/**").addResourceLocations("classpath:/assets/");
 	}
 	
 	
