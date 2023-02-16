@@ -45,7 +45,7 @@ public class AdminController {
 	public String update(SiteVo vo,MultipartFile file) {
 		String url = fileuploadService.restore(file);
 		vo.setProfile(url);
-		
+		System.out.println(url);
 		SiteVo site = applicationContext.getBean(SiteVo.class);
 		
 		siteService.updateSite(vo);
