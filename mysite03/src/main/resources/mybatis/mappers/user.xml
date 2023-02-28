@@ -10,8 +10,8 @@
 		]]>
 	</insert>
 
-	<select id="findByEmailAndPassword"
-		resultType="uservo" parameterType="map">	
+	<select id="findByEmailAndPassword" resultType="uservo"
+		parameterType="map">	
 		<![CDATA[
 		select no,name,role
 		from user 
@@ -19,14 +19,18 @@
 		]]>
 	</select>
 
-	<select id="findByNo" resultType="uservo"
-		parameterType="long">	
+	<select id="findByNo" resultType="uservo" parameterType="long">	
 		<![CDATA[
 		select name,password,email,gender 
 		from user where no=#{no }
 		]]>
 	</select>
-
+	<select id="findByEmail" resultType="uservo" parameterType="string">	
+		<![CDATA[
+		select no
+		from user where email=#{email }
+		]]>
+	</select>
 	<update id="update" parameterType="uservo">
 		<choose>
 			<when test='password=""'>
