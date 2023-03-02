@@ -26,12 +26,16 @@ public class GuestbooRepository{
 		return sqlSession.selectList("guestbook.findAll");
 	}
 
-	public void deleteByNoAndPassword(int no, String password) {
+	public int deleteByNoAndPassword(Long no, String password) {
 //		Map<String, Object> map = new HashMap<>();
 //		map.put("no", no);
-//		map.put("password",password);		
+//		map.put("password",password);	
 		Map<String, Object> map = Map.of("no",no,"password",password);
-		sqlSession.delete("guestbook.deleteByNoAndPassword",map);
+		return sqlSession.delete("guestbook.deleteByNoAndPassword",map);
+	}
+
+	public List<GuestbookVo> findByNo(Long startNo) {
+		return sqlSession.selectList("guestbook.findByNo",startNo);
 	}
 
 }

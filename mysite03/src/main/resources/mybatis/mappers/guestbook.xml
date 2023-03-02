@@ -15,6 +15,28 @@
 		]]>
 	</select>
 
+	<select id="findByNo" resultMap="findallList" parameterType="long">	
+		<choose>
+			<when test='no == 0'>
+				<![CDATA[
+				select no,name,message,reg_date
+				from guestbook 
+				order by no desc
+				limit 0,5
+				]]>
+			</when>
+			<otherwise>
+				<![CDATA[
+				select no,name,message,reg_date
+				from guestbook 
+				where no < #{no }
+				order by no desc
+				limit 0,5
+				]]>
+			</otherwise>
+		</choose>
+	</select>
+	
 	<insert id="insert" parameterType="guestbookvo">
 		<![CDATA[
 		insert 
@@ -31,7 +53,7 @@
 		<![CDATA[
 		delete 
 		from guestbook 
-		where no=#{no } and password=${password }
+		where no=#{no } and password=#{password }
 		]]>
 	</delete>
 </mapper>
