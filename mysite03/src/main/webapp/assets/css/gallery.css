@@ -9,6 +9,8 @@
 	padding-left: 40px;
 	float: left;
 	margin-bottom:10px;
+	background: url(/mysite03/assets/images/gallery.png) 0 0 no-repeat;
+    background-size: 35px;
 }
 
 #upload-image {
