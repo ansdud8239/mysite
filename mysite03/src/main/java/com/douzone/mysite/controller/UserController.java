@@ -40,6 +40,8 @@ public class UserController {
 			model.addAllAttributes(result.getModel());
 			return "user/join";
 		}
+		vo.setRole("USER");
+		System.out.println("############"+vo);
 		userService.join(vo);
 		return "redirect:/user/joinsuccess";
 	}
