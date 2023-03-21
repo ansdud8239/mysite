@@ -10,8 +10,20 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/css/guestbook-spa.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script type="text/javascript" src="${pageContext.request.contextPath }/assets/js/jquery/jquery-1.9.0.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath }/assets/js/ejs/ejs.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script>
+var isEnd = false;
+var sNO = 0;
+var listItemTemplate = new EJS({
+	url:"${pageContext.request.contextPath }/assets/js/ejs/list-item-template.ejs"
+	
+});
+var listTemplate = new EJS({
+	url:"${pageContext.request.contextPath }/assets/js/ejs/list-template.ejs"
+	
+});
+/*
 var render = function(vo,mode){
 	var htmls="";
 	htmls = "<li data-no='"+vo.no+"'>"+
@@ -20,12 +32,16 @@ var render = function(vo,mode){
 				"<strong></strong> "+
 				"<a href='' data-no='"+vo.no+"'>삭제</a>"+
 			"</li>";
-
+	var htmls = listItemTemplate.render(vo);
 	$("#list-guestbook")[mode?"prepend":"append"](htmls);
 }
-var fetch=function(sno){
+*/
+var fetch=function(){
+	if(isEnd){
+		return;
+	}
 	$.ajax({
-		url:"${pageContext.request.contextPath }/guestbook/api/?sno="+sno,
+		url:"${pageContext.request.contextPath }/guestbook/api/?sno="+sNO,
 		type:"get",
 		dataType:"json",
 		success:function(response){
@@ -34,9 +50,20 @@ var fetch=function(sno){
 				return;
 			}
 			//console.log(response.data);
-			response.data.forEach(function(vo){
-				render(vo);
-			});
+			//response.data.forEach(function(vo){
+				//render(vo);
+			//});
+			
+			// detect end
+			if(response.data.length == 0){
+				isEnd = true;
+				return;
+			}
+			
+			var htmls = listTemplate.render(response);
+			$("#list-guestbook").append(htmls);
+			
+			sNO = $("#list-guestbook li:last-child").data("no") || 0;
 
 		},
 	});
@@ -68,13 +95,12 @@ $(function(){
 		var scrollTop = $window.scrollTop();
 		
 		if(documentHeight < windowHeight+scrollTop+10){
-			var sno = $("#list-guestbook li:last-child").data("no") || 0;
-			fetch(sno);
+			fetch();
 		}
 	});
 	
 	//read
-	fetch(0);
+	fetch();
 	
 	//create
 	$("#add-form").submit(function(event){
@@ -124,7 +150,9 @@ $(function(){
 					return;
 				}
 				$("#add-form")[0].reset();
-				render(response.data,true);
+				var htmls = listItemTemplate.render(response.data);
+				$("#list-guestbook").prepend(htmls);
+
 			},
 		});
 	});
