@@ -2,6 +2,7 @@ package com.douzone.mysite.repository;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,5 +33,9 @@ public class UserRepository {
 
 	public void update(UserVo vo) {
 		sqlSession.update("user.update", vo);
+	}
+
+	public UserVo findByEmail(String username) {
+		return sqlSession.selectOne("user.findByEmail",username);
 	}
 }

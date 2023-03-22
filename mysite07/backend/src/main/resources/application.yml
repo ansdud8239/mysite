@@ -103,7 +103,11 @@ logging:
       max-history: 30
    level:
       root: INFO
-      me:
-         kickscar:
+      com:
+         douzone:
             mysite:
-               exception: ERROR        
+               exception: ERROR 
+               
+jwt:
+  secret: VlwEyVBsYt9V7zq57TejMnVUyzblYcfPQye08f7MGVA9XkHa
+       

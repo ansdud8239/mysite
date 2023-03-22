@@ -6,9 +6,9 @@
     </settings>
     
 	<typeAliases>
-		<typeAlias type="me.kickscar.mysite.vo.GuestbookVo" alias="guestbookvo" />
-		<typeAlias type="me.kickscar.mysite.vo.GalleryVo" alias="galleryvo" />
-		<typeAlias type="me.kickscar.mysite.vo.UserVo" alias="uservo" />
+		<typeAlias type="com.douzone.mysite.vo.GuestbookVo" alias="guestbookvo" />
+		<typeAlias type="com.douzone.mysite.vo.GalleryVo" alias="galleryvo" />
+		<typeAlias type="com.douzone.mysite.vo.UserVo" alias="uservo" />
 	</typeAliases>
 	
 	<mappers>
