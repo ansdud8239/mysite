@@ -2,7 +2,7 @@ import React from 'react';
 import './assets/scss/App.scss';
 import {BrowserRouter as Router} from 'react-router-dom';
 import {Routes, Route} from 'react-router';
-import Main from './component/Main';
+import Main from './component/main/index';
 import Gallery from './component/gallery';
 import Guestbook from './component/guestbook';
 import SignIn from './component/user/SignIn';

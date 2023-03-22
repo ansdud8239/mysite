@@ -6,8 +6,7 @@ import styles from '../../assets/scss/component/gallery/Galery.scss';
 
 export default function Index() {
     const [imageList, setImageList] = useState([]);
-
-    useEffect(async () => {
+    const fetchList = async () => {
         try {
             const response = await fetch('/api/gallery', {
                 method: 'get',
@@ -16,20 +15,23 @@ export default function Index() {
                     'Accept': 'application/json'
                 }
             });
-
+    
             if (!response.ok) {
                 throw new Error(`${response.status} ${response.statusText}`);
             }
-
+    
             const json = await response.json();
             if (json.result !== 'success') {
                 throw new Error(`${json.result} ${json.message}`);
             }
-
+    
             setImageList(json.data);
         } catch (err) {
             console.error(err);
         }
+    }
+    useEffect( () => {
+        fetchList();
     }, []);
 
     const notifyImage = {

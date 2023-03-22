@@ -5,7 +5,9 @@ import styles from '../assets/scss/layout/Navigation.scss';
 export default function Navigation() {
     return (
         <nav className={styles.Main}>
+            <NavLink to={'/'}>home</NavLink>
             <NavLink to={'/guestbook'}>방명록</NavLink>
+            <NavLink to={'/board'}>게시판</NavLink>
             <NavLink to={'/gallery'}>갤러리</NavLink>
         </nav>
     );

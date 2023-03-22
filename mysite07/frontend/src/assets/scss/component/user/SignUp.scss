@@ -1,0 +1,30 @@
+@charset "utf-8";
+
+.SignUp {
+  margin:20px auto;
+  width:540px;
+  
+  form	{
+    width:250px;
+    padding:10px;
+    border:1px solid #666;
+    border-radius: 10px;
+    margin:50px auto;
+  }
+ 
+  input[type="submit"]	{ 
+    display:block;
+    width:80px; 
+    margin:20px auto; }
+
+   :global(.block-label){
+      display:block;
+      margin:5px 0 3px 0; 
+   }
+  fieldset			{ 
+    border:none;
+    margin:5px 0 3px 0; 
+  }
+}
+
+
