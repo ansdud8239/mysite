@@ -1,4 +1,4 @@
-package com.douzone.mysite.jwt;
+package com.douzone.mysite.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -7,6 +7,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.douzone.mysite.jwt.JwtAuthenticationFilter;
+import com.douzone.mysite.jwt.JwtTokenProvider;
 
 import lombok.RequiredArgsConstructor;
 
@@ -29,11 +32,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		// http.httpBasic().disable(); // 일반적인 루트가 아닌 다른 방식으로 요청시 거절, header에 id, pw가 아닌
 		// token(jwt)을 달고 간다. 그래서 basic이 아닌 bearer를 사용한다.
 		http.httpBasic().disable().authorizeRequests()// 요청에 대한 사용권한 체크
-				.antMatchers("/test").authenticated().antMatchers("/admin/**").hasRole("ADMIN").antMatchers("/user/**")
-				.hasRole("USER").antMatchers("/**").permitAll().and().addFilterBefore(
-						new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class); // JwtAuthenticationFilter를
-																													// UsernamePasswordAuthenticationFilter
-																													// 전에
+				.antMatchers("/test").authenticated().antMatchers("/api/admin/**").hasRole("ADMIN").antMatchers("/api/user/**")
+				.hasRole("USER").antMatchers("/**").permitAll().and()
+				.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class); // JwtAuthenticationFilter를																									// 전에
 																													// 넣는다
 		// + 토큰에 저장된 유저정보를 활용하여야 하기 때문에 CustomUserDetailService 클래스를 생성합니다.
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

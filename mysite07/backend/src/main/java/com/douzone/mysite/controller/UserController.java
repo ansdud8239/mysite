@@ -1,8 +1,12 @@
 package com.douzone.mysite.controller;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/user")
 @RequiredArgsConstructor
+@PreAuthorize(value = "")
 public class UserController {
 	@Autowired
 	private UserRepository userRepository;
@@ -33,7 +38,7 @@ public class UserController {
 //	}
 	
 	@PostMapping("/login")
-	public ResponseEntity<JsonResult> login(@RequestBody UserVo vo) {
+	public ResponseEntity<JsonResult> login(@RequestBody UserVo vo,HttpServletRequest request) {
 		System.out.println(vo);
 //		UserVo member = userRepository.findByEmail(vo.getEmail())
 //                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 E-MAIL 입니다."));
@@ -45,6 +50,9 @@ public class UserController {
 		
 		String token = jwtTokenProvider.createToken(member.getNo().toString(), member.getRole(),member.getName());
 		System.out.println(token);
+		System.out.println(jwtTokenProvider.validateToken(token));
+		HttpSession session=request.getSession(true);
+		session.setAttribute("token", token);
 		return ResponseEntity.status(HttpStatus.OK).body(JsonResult.success(token));
 	}
 }
